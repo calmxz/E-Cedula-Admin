@@ -11,19 +11,26 @@ document.addEventListener('DOMContentLoaded', function () {
             const password = document.getElementById('password').value;
 
             axios.get('/sanctum/csrf-cookie').then(response => {
-                // Now we can make a login request
-                axios.post('/login', {
-                    email: email,
-                    password: password
-                }).then(response => {
-                    console.log('Logged in successfully');
-                    // Handle successful login (e.g., redirect to dashboard)
-                    window.location.href = '/dashboard';
-                }).catch(error => {
-                    console.error('Login failed', error);
-                    // Handle login failure (e.g., display error message)
-                    alert('Login failed. Please check your credentials and try again.');
-                });
+                axios.post('/login', { email, password })
+                    .then(response => {
+                        window.location.href = 'home/dashboard'; // Redirect on successful login
+                    })
+                    .catch(error => {
+                        if (error.response && error.response.status === 422) {
+                            // Handle validation errors
+                            const errors = error.response.data.errors;
+                            let errorMessage = 'Login failed. Please check your credentials and try again.';
+                            if (errors.email) {
+                                errorMessage = errors.email[0];
+                            } else if (errors.password) {
+                                errorMessage = errors.password[0];
+                            }
+                            alert(errorMessage);
+                        } else {
+                            console.error('Login failed', error);
+                            alert('Login failed due to a server error. Please try again later.');
+                        }
+                    });
             });
         });
     }
