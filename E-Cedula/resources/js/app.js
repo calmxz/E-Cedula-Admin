@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
             axios.get('/sanctum/csrf-cookie').then(response => {
                 axios.post('/login', { email, password })
                     .then(response => {
-                        window.location.href = 'home/dashboard'; // Redirect on successful login
+                        window.location.href = '/home'; // Redirect on successful login
                     })
                     .catch(error => {
                         if (error.response && error.response.status === 422) {
