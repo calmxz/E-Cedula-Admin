@@ -35,6 +35,10 @@ async function populateIndividualsTable(){
             <td>${individuals.TotalCommunityTaxDue}</td>
             <td>${individuals.Interest}</td>
             <td>${individuals.TotalAmountPaid}</td>
+            <td>
+                <button type="button" data-id="${individuals._id}" class="btn btn-success btn-update">Update</button>
+                <button type="button" data-id="${individuals._id}" class="btn btn-danger btn-delete">Delete</button>
+            </td>
             `;
             tableBody.appendChild(row);
         });

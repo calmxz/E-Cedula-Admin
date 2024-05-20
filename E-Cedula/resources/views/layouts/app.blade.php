@@ -69,10 +69,9 @@
                                     </form>
 
                                     <!-- Logout Link -->
-                                    <a href="{{ route('logout') }}"
-                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                        Logout
-                                    </a>
+                                    <button class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </button>
                                 </div>
                             </li>
                         @endguest

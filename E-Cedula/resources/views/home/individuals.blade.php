@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>My Simple App</title>
+    <title>E-Cedula</title>
     @vite(['resources/css/app.css'])
 </head>
 <body>
@@ -42,6 +42,7 @@
                     <th>Total Community Tax Due</th>
                     <th>Interest</th>
                     <th>Total Amount Paid</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody></tbody>
