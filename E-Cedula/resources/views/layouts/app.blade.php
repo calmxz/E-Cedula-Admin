@@ -34,7 +34,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-                    <a class="nav-link" href="{{ route('home.home') }}">Home</a>
+                    <a class="nav-link" href="{{ route('home.dashboard') }}">Dashboard</a>
                     <a class="nav-link" href="{{ route('home.individuals') }}">CCI (Individual)</a>
                     <a class="nav-link" href="{{ route('home.company') }}">CCC (Company)</a>
                     </ul>

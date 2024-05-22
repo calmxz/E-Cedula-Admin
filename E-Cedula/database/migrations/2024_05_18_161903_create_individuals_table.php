@@ -18,7 +18,7 @@ class CreateIndividualsTable extends Migration
             $collection->string('CCI2024No');
             $collection->timestamp('DateCreated');
             $collection->string('LastName');
-            $collection->string('MiddleName');
+            $collection->string('MiddleName')->nullable();
             $collection->string('FirstName');
             $collection->string('ExtensionName')->nullable();
             $collection->string('Sex');
@@ -30,15 +30,22 @@ class CreateIndividualsTable extends Migration
             $collection->string('CivilStatus');
             $collection->string('Citizenship');
             $collection->string('ICRNo')->nullable();
-            $collection->string('HeightInFt');
-            $collection->integer('WeightInKg');
-            $collection->string('AreYouEmployed');
-            $collection->string('TINNo')->nullable();
-            $collection->string('ProfessionOccupationBusiness');
-            $collection->decimal('SalariesOrGrossReceipt', 10, 2);
-            $collection->integer('TotalCommunityTaxDue');
+            $collection->string('Height');
+            $collection->integer('Weight')->nullable();
+            $collection->string('Employed');
+            $collection->string('profession');
+            $collection->string('TIN')->nullable();
+            $collection->decimal('GrossEarnings', 10, 2);
+            $collection->string('validId');
+            $collection->decimal('taxableAmount', 10, 2);
+            $collection->decimal('basicCommunityTax', 10, 2);
+            $collection->integer('communityTaxDue');
+            $collection->decimal('Total', 10, 2);
             $collection->decimal('Interest', 5, 2);
             $collection->decimal('TotalAmountPaid', 10, 2);
+            $collection->string('paymentMethod');
+            $collection->string('paymentReferenceNumber');
+            $collection->integer('ticketNumber');
             $collection->timestamps();
         });
     }

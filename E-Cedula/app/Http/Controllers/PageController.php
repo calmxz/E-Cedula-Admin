@@ -15,5 +15,10 @@ class PageController extends Controller
     {
         return view('home.company');
     }
+
+    public function dashboard()
+    {
+        return view('home.dashboard');
+    }
 }
 

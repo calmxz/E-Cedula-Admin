@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Models\Individuals;
 use App\Models\Company;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -62,3 +63,5 @@ Route::get('/companies/{id}', function($id){
     $company = Company::where(['_id' => $id] )->first();
     return response()->json($company, 201);
 });
+
+Route::get('/dashboard-data', [DashboardController::class, 'getDashboardData']);

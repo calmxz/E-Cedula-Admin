@@ -5,6 +5,7 @@ async function populateCompaniesTable() {
     try {
         const response = await axios.get('/api/companies');
         const tableBody = document.querySelector('.table tbody');
+        const searchInput = document.getElementById('searchInput');
 
         tableBody.innerHTML = '';
 
@@ -24,10 +25,10 @@ async function populateCompaniesTable() {
                 <td>${company.date_of_registration}</td>
                 <td>${company.region}</td>
                 <td>${company.tin_no}</td>
-                <td>${company.gross_receipt}</td>
-                <td>${company.total_community_tax_due}</td>
-                <td>${company.interest}</td>
-                <td>${company.total_amount_paid}</td>
+                <td>₱${company.gross_receipt}</td>
+                <td>₱${company.total_community_tax_due}</td>
+                <td>₱${company.interest}</td>
+                <td>₱${company.total_amount_paid}</td>
                 <td>
                     <div class="d-flex">
                         <button type="button" data-id="${company._id}" class="btn btn-success me-2 btn-update">Update</button>
@@ -37,6 +38,30 @@ async function populateCompaniesTable() {
             `;
             tableBody.appendChild(row);
         });
+
+        // Filter companies based on search input
+        searchInput.addEventListener('input', function () {
+            const filter = searchInput.value.toLowerCase();
+            const rows = tableBody.getElementsByTagName('tr');
+            for (let i = 0; i < rows.length; i++) {
+                const columns = rows[i].getElementsByTagName('td');
+                let match = false;
+                for (let j = 0; j < columns.length; j++) {
+                    if (columns[j]) {
+                        const textValue = columns[j].textContent || columns[j].innerText;
+                        if (textValue.toLowerCase().indexOf(filter) > -1) {
+                            match = true;
+                            break;
+                        }
+                    }
+                }
+                if (match) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        });
     } catch (error) {
         console.error("Error fetching companies:", error);
     }
@@ -44,7 +69,7 @@ async function populateCompaniesTable() {
 
 document.addEventListener('click', function (event){
     if (event.target.classList.contains('btn-update')){
-        const companyId = event.target.getAttribute('data-id')
+        const companyId = event.target.getAttribute('data-id');
         updateCompanyData(companyId);
     }
 });
@@ -65,14 +90,13 @@ window.onload = () => {
 
 async function updateCompanyData(companyId){
     const companyToUpdate = await getCompanyById(companyId);
-    console.log(companyToUpdate);
 
     document.getElementById('company_name').value = companyToUpdate.company_name;
     document.getElementById('barangay').value = companyToUpdate.barangay;
     document.getElementById('municipality').value = companyToUpdate.municipality;
     document.getElementById('province').value = companyToUpdate.province;
     document.getElementById('kind_of_organization').value = companyToUpdate.kind_of_organization;
-    document.getElementById('nature_of_business').value = companyToUpdate.nature_of_business;
+    document.getElementById('nature_of_business').value = companyToUpdate.kind_nature_of_business;
     document.getElementById('place_of_registration').value = companyToUpdate.place_of_registration;
     document.getElementById('date_of_registration').value = companyToUpdate.date_of_registration;
     document.getElementById('region').value = companyToUpdate.region;
@@ -90,20 +114,20 @@ async function updateCompanyData(companyId){
 }
 
 function saveChanges(){
-        const company_name = document.getElementById('company_name').value
-        const barangay = document.getElementById('barangay').value
-        const municipality = document.getElementById('municipality').value
-        const province = document.getElementById('province').value
-        const kind_of_organization = document.getElementById('kind_of_organization').value
-        const nature_of_business = document.getElementById('nature_of_business').value
-        const place_of_registration = document.getElementById('place_of_registration').value
-        const date_of_registration = document.getElementById('date_of_registration').value
-        const region = document.getElementById('region').value
-        const tin = document.getElementById('tin').value 
-        const gross_receipt = document.getElementById('gross_receipt').value
-        const total_community_tax_due = document.getElementById('total_community_tax_due').value
-        const interest = document.getElementById('interest').value
-        const total_amount_paid = document.getElementById('total_amount_paid').value
+    const company_name = document.getElementById('company_name').value
+    const barangay = document.getElementById('barangay').value
+    const municipality = document.getElementById('municipality').value
+    const province = document.getElementById('province').value
+    const kind_of_organization = document.getElementById('kind_of_organization').value
+    const nature_of_business = document.getElementById('nature_of_business').value
+    const place_of_registration = document.getElementById('place_of_registration').value
+    const date_of_registration = document.getElementById('date_of_registration').value
+    const region = document.getElementById('region').value
+    const tin = document.getElementById('tin').value 
+    const gross_receipt = document.getElementById('gross_receipt').value
+    const total_community_tax_due = document.getElementById('total_community_tax_due').value
+    const interest = document.getElementById('interest').value
+    const total_amount_paid = document.getElementById('total_amount_paid').value
 
     const data = {
          company_name: company_name,
@@ -111,7 +135,7 @@ function saveChanges(){
          municipality: municipality,
          province: province,
          kind_of_organization: kind_of_organization,
-         nature_of_business: nature_of_business,
+         kind_nature_of_business: nature_of_business,
          place_of_registration: place_of_registration,
          date_of_registration: date_of_registration,
          region: region,
@@ -132,7 +156,7 @@ function saveChanges(){
         populateCompaniesTable();
     })
     .catch(error => {
-        console.error("Error updating product", error);
+        console.error("Error updating company's cedula", error);
     });
 }
 
@@ -165,11 +189,14 @@ async function getCompanyById(companyId) {
 
 async function deleteCompanyData(companyId){
     try {
+        const company = await getCompanyById(companyId);
+        const company_name = company.company_name;
+
         await axios.delete(`/api/companies/${companyId}`);
         populateCompaniesTable();
 
-        alert("Company cedula deleted successfully");
+        alert(`${company_name}'s cedula deleted successfully`);
     } catch (error) {
-        console.error("Error deleting product:", error)
+        console.error("Error deleting company's cedula:", error)
     }
 }
