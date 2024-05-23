@@ -105,9 +105,9 @@ async function updateIndividualData(individualId){
     const individualToUpdate = await getIndividualById(individualId);
     
     document.getElementById('first_name').value = individualToUpdate.FirstName;
-    document.getElementById('middle_name').value = individualToUpdate.MiddleName;
+    document.getElementById('middle_name').value = individualToUpdate.MiddleName || '';
     document.getElementById('last_name').value = individualToUpdate.LastName;
-    document.getElementById('extension_name').value = individualToUpdate.ExtensionName;
+    document.getElementById('extension_name').value = individualToUpdate.ExtensionName || '';
     document.getElementById('sex').value = individualToUpdate.Sex;
     document.getElementById('region').value = individualToUpdate.Region;
     document.getElementById('province').value = individualToUpdate.Province;
@@ -118,9 +118,9 @@ async function updateIndividualData(individualId){
     document.getElementById('citizenship').value = individualToUpdate.Citizenship;
     document.getElementById('icr_no').value = individualToUpdate.ICRNo;
     document.getElementById('height').value = individualToUpdate.Height;
-    document.getElementById('weight').value = individualToUpdate.Weight;
+    document.getElementById('weight').value = individualToUpdate.Weight || '';
     document.getElementById('employed').value = individualToUpdate.Employed;
-    document.getElementById('tin').value = individualToUpdate.TIN;
+    document.getElementById('tin').value = individualToUpdate.TIN || '';
     document.getElementById('profession').value = individualToUpdate.profession;
     document.getElementById('gross_earnings').value = individualToUpdate.GrossEarnings;
     document.getElementById('taxable_amount').value = individualToUpdate.taxableAmount;
@@ -140,40 +140,40 @@ async function updateIndividualData(individualId){
 }
 
 function saveChanges(){
-   const first_name = document.getElementById('first_name').value
-   const middle_name = document.getElementById('middle_name').value
-   const last_name = document.getElementById('last_name').value
-   const extension_name = document.getElementById('extension_name').value
-   const sex = document.getElementById('sex').value
-   const region = document.getElementById('region').value
-   const province = document.getElementById('province').value
-   const municipality = document.getElementById('municipality').value
-   const date_of_birth = document.getElementById('date_of_birth').value
-   const place_of_birth = document.getElementById('place_of_birth').value
-   const civil_status = document.getElementById('civil_status').value
-   const citizenship = document.getElementById('citizenship').value
-   const icr_no = document.getElementById('icr_no').value
-   const height = document.getElementById('height').value
-   const weight = document.getElementById('weight').value
-   const employed = document.getElementById('employed').value
-   const tin = document.getElementById('tin').value
-   const profession = document.getElementById('profession').value
-   const gross_earnings = document.getElementById('gross_earnings').value
-   const taxable_amount = document.getElementById('taxable_amount').value
-   const basic_community_tax = document.getElementById('basic_community_tax').value
-   const community_tax_due = document.getElementById('community_tax_due').value
-   const total = document.getElementById('total').value
-   const interest = document.getElementById('interest').value
-   const total_amount_paid = document.getElementById('total_amount_paid').value
-   const payment_method = document.getElementById('payment_method').value
-   const payment_reference_number = document.getElementById('payment_reference_number').value
-   const ticket_number = document.getElementById('ticket_number').value
+   const first_name = document.getElementById('first_name').value;
+   const middle_name = document.getElementById('middle_name').value || '';
+   const last_name = document.getElementById('last_name').value;
+   const extension_name = document.getElementById('extension_name').value || '';
+   const sex = document.getElementById('sex').value;
+   const region = document.getElementById('region').value;
+   const province = document.getElementById('province').value;
+   const municipality = document.getElementById('municipality').value;
+   const date_of_birth = document.getElementById('date_of_birth').value;
+   const place_of_birth = document.getElementById('place_of_birth').value;
+   const civil_status = document.getElementById('civil_status').value;
+   const citizenship = document.getElementById('citizenship').value;
+   const icr_no = document.getElementById('icr_no').value || '';
+   const height = document.getElementById('height').value;
+   const weight = document.getElementById('weight').value || '';
+   const employed = document.getElementById('employed').value;
+   const tin = document.getElementById('tin').value || '';
+   const profession = document.getElementById('profession').value;
+   const gross_earnings = document.getElementById('gross_earnings').value;
+   const taxable_amount = document.getElementById('taxable_amount').value;
+   const basic_community_tax = document.getElementById('basic_community_tax').value;
+   const community_tax_due = document.getElementById('community_tax_due').value;
+   const total = document.getElementById('total').value;
+   const interest = document.getElementById('interest').value;
+   const total_amount_paid = document.getElementById('total_amount_paid').value;
+   const payment_method = document.getElementById('payment_method').value;
+   const payment_reference_number = document.getElementById('payment_reference_number').value;
+   const ticket_number = document.getElementById('ticket_number').value;
 
    const data = {
      FirstName: first_name,
-     MiddleName: middle_name,
+     MiddleName: middle_name || '',
      LastName: last_name,
-     ExtensionName: extension_name,
+     ExtensionName: extension_name || '',
      Sex: sex,
      Region: region,
      Province: province,
@@ -182,11 +182,11 @@ function saveChanges(){
      PlaceOfBirth: place_of_birth,
      CivilStatus: civil_status,
      Citizenship: citizenship,
-     ICRNo: icr_no,
+     ICRNo: icr_no || '',
      Height: height,
-     Weight: weight,
+     Weight: weight || '',
      Employed: employed,
-     TIN: tin,
+     TIN: tin || '',
      profession: profession,
      GrossEarnings: gross_earnings,
      taxableAmount: taxable_amount,

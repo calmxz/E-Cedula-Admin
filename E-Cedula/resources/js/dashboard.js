@@ -1,66 +1,64 @@
 import axios from 'axios';
-import { Chart, registerables } from 'chart.js';
+import Chart from 'chart.js/auto';
 
-Chart.register(...registerables);
+document.addEventListener('DOMContentLoaded', function() {
+    function fetchDataAndUpdate() {
+        axios.get('/dashboard-data')
+            .then(response => {
+                const data = response.data;
 
-document.addEventListener('DOMContentLoaded', function () {
-    axios.get('/api/dashboard-data')
-        .then(response => {
-            const data = response.data;
-            document.getElementById('collectionsToday').textContent = `Php ${data.totalCollectionsToday.toFixed(2)}`;
-            document.getElementById('transactionsToday').textContent = data.transactionsToday;
-            document.getElementById('collectionsThisMonth').textContent = `Php ${data.totalCollectionsThisMonth.toFixed(2)}`;
-            document.getElementById('transactionsThisMonth').textContent = data.transactionsThisMonth;
+                // Format numbers to 2 decimal places
+                const formattedCollectionsToday = data.collectionsToday.toFixed(2);
+                const formattedTransactionsToday = data.transactionsToday
+                const formattedWeeklyEarnings = data.collectionsThisWeek.toFixed(2);
+                const formattedTransactionsThisWeek = data.transactionsThisWeek
 
-            // Sample data for charts
-            const weeklyEarningsData = [0, 0, 0, 0, 0, 0, 0]; // Replace with actual data
-            const totalEarningsData = [0, 2000, 5000, 7500, 10000, 15000, 18590]; // Replace with actual data
+                // Update the DOM with the fetched and formatted data
+                document.getElementById('collectionsToday').textContent = formattedCollectionsToday;
+                document.getElementById('transactionsToday').textContent = formattedTransactionsToday;
+                document.getElementById('collectionsThisWeek').textContent = formattedWeeklyEarnings;
+                document.getElementById('transactionsThisWeek').textContent = formattedTransactionsThisWeek;
 
-            // Weekly Earnings Chart
-            new Chart(document.getElementById('weeklyEarningsChart').getContext('2d'), {
-                type: 'line',
-                data: {
-                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                    datasets: [{
-                        label: 'Total Earnings',
-                        data: weeklyEarningsData,
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1,
-                        fill: false
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
+                // Update charts with the fetched data
+                updateCharts(data);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
             });
+    }
 
-            // Total Earnings Chart
-            new Chart(document.getElementById('totalEarningsChart').getContext('2d'), {
-                type: 'line',
-                data: {
-                    labels: ['2023-06', '2023-07', '2023-08', '2023-09', '2023-10', '2023-11', '2023-12'],
-                    datasets: [{
-                        label: 'Total Earnings',
-                        data: totalEarningsData,
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1,
-                        fill: false
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        })
-        .catch(error => {
-            console.error('There was an error fetching the data!', error);
+    function updateCharts(data) {
+        const weeklyEarningsChart = new Chart(document.getElementById('weeklyEarningsChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: ['6 Days Ago', '5 Days Ago', '4 Days Ago', '3 Days Ago', '2 Days Ago', 'Yesterday', 'Today'],
+                datasets: [{
+                    label: 'Earnings',
+                    data: data.weeklyEarnings,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            }
         });
+
+        const dailyEarningsChart = new Chart(document.getElementById('dailyEarningsChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: ['6 Days Ago', '5 Days Ago', '4 Days Ago', '3 Days Ago', '2 Days Ago', 'Yesterday', 'Today'],
+                datasets: [{
+                    label: 'Earnings',
+                    data: data.weeklyTransactions,
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            }
+        });
+    }
+
+    // Initial fetch
+    fetchDataAndUpdate();
 });

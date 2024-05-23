@@ -6,7 +6,7 @@ use App\Http\Controllers\DashboardController;
 
 Auth::routes();
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/', function () {
         return view('home.dashboard');
     });

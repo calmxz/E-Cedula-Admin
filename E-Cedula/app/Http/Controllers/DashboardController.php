@@ -9,33 +9,48 @@ use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
-    public function getDashboardData()
+    public function getData()
     {
         $today = Carbon::today();
         $startOfMonth = Carbon::now()->startOfMonth();
-        $endOfMonth = Carbon::now()->endOfMonth();
+        $startOfWeek = Carbon::now()->startOfWeek();
 
-        // Today's collections and transactions
-        $companiesToday = Company::whereDate('date_created', $today)->sum('total_amount_paid');
-        $individualsToday = Individuals::whereDate('DateCreated', $today)->sum('TotalAmountPaid');
-        $totalCollectionsToday = $companiesToday + $individualsToday;
+        // Today's data
+        $companiesToday = Company::where('created_at', '>=', $today);
+        $individualsToday = Individuals::where('DateCreated', '>=', $today);
 
-        $transactionsToday = Company::whereDate('date_created', $today)->count() + 
-                             Individuals::whereDate('DateCreated', $today)->count();
+        $collectionsToday = $companiesToday->sum('total_amount_paid') + $individualsToday->sum('TotalAmountPaid');
+        $transactionsToday = $companiesToday->count() + $individualsToday->count();
 
-        // This month's collections and transactions
-        $companiesThisMonth = Company::whereBetween('date_created', [$startOfMonth, $endOfMonth])->sum('total_amount_paid');
-        $individualsThisMonth = Individuals::whereBetween('DateCreated', [$startOfMonth, $endOfMonth])->sum('TotalAmountPaid');
-        $totalCollectionsThisMonth = $companiesThisMonth + $individualsThisMonth;
+        // This month's data
+        $companiesThisWeek = Company::where('created_at', '>=', $startOfWeek);
+        $individualsThisWeek = Individuals::where('DateCreated', '>=', $startOfWeek);
 
-        $transactionsThisMonth = Company::whereBetween('date_created', [$startOfMonth, $endOfMonth])->count() + 
-                                 Individuals::whereBetween('DateCreated', [$startOfMonth, $endOfMonth])->count();
+        $collectionsThisWeek = $companiesThisWeek->sum('total_amount_paid') + $individualsThisWeek->sum('TotalAmountPaid');
+        $transactionsThisWeek = $companiesThisWeek->count() + $individualsThisWeek->count();
+
+        // Weekly earnings data
+        $weeklyEarnings = [];
+        $weeklyTransactions = [];
+        for ($i = 0; $i < 7; $i++) {
+            $date = Carbon::today()->subDays($i);
+            $companiesOnDate = Company::whereDate('created_at', $date);
+            $individualsOnDate = Individuals::whereDate('DateCreated', $date);
+
+            $earnings = $companiesOnDate->sum('total_amount_paid') + $individualsOnDate->sum('TotalAmountPaid');
+            $transactions = $companiesOnDate->count() + $individualsOnDate->count();
+
+            array_unshift($weeklyEarnings, $earnings);
+            array_unshift($weeklyTransactions, $transactions);
+        }
 
         return response()->json([
-            'totalCollectionsToday' => $totalCollectionsToday,
+            'collectionsToday' => $collectionsToday,
             'transactionsToday' => $transactionsToday,
-            'totalCollectionsThisMonth' => $totalCollectionsThisMonth,
-            'transactionsThisMonth' => $transactionsThisMonth
+            'collectionsThisWeek' => $collectionsThisWeek,
+            'transactionsThisWeek' => $transactionsThisWeek,
+            'weeklyEarnings' => $weeklyEarnings,
+            'weeklyTransactions' => $weeklyTransactions,
         ]);
     }
 }
