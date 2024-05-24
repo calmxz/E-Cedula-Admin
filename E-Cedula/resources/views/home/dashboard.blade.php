@@ -8,8 +8,8 @@
         <div class="col-md-3">
             <div class="card text-white bg-primary">
                 <div class="card-body">
-                    <h5 class="card-title">Collections Today</h5>
-                    <p class="card-text" id="collectionsToday">0</p>
+                    <h5 class="card-title">Earnings Today</h5>
+                    <p class="card-text" id="collectionsToday">&#8369;</p>
                 </div>
             </div>
         </div>
@@ -17,23 +17,23 @@
             <div class="card text-white bg-success">
                 <div class="card-body">
                     <h5 class="card-title">Transactions Today</h5>
-                    <p class="card-text" id="transactionsToday">0</p>
+                    <p class="card-text" id="transactionsToday">Php 0</p>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card text-white bg-info">
                 <div class="card-body">
-                    <h5 class="card-title">Collections This Week</h5>
-                    <p class="card-text" id="collectionsThisWeek">0</p>
+                    <h5 class="card-title">Earnings This Month</h5>
+                    <p class="card-text" id="collectionsThisMonth">Php 0</p>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card text-white bg-warning">
                 <div class="card-body">
-                    <h5 class="card-title">Transactions This Week</h5>
-                    <p class="card-text" id="transactionsThisWeek">0</p>
+                    <h5 class="card-title">Transactions This Month</h5>
+                    <p class="card-text" id="transactionsThisMonth">Php 0</p>
                 </div>
             </div>
         </div>
@@ -48,6 +48,7 @@
         </div>
     </div>
 </div>
+
 @endsection
 
 @vite(['resources/js/dashboard.js'])

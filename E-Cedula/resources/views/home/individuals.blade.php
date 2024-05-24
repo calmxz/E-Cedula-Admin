@@ -25,7 +25,7 @@
         </div>
 
         <div class="table-responsive">
-            <table class="table table-striped table-hover">
+            <table class="table table-striped table-hover ">
                 <thead class="thead-dark">
                     <tr>
                         <th>#</th>
@@ -80,7 +80,7 @@
                         <form id="individualForm">
                             @csrf
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <!-- First Column Fields -->
                                     <div class="mb-3">
                                         <label for="first_name" class="form-label">First Name</label>
@@ -123,7 +123,7 @@
                                         <input type="text" class="form-control" id="place_of_birth" required>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <!-- Second Column Fields -->
                                     <div class="mb-3">
                                         <label for="civil_status" class="form-label">Civil Status</label>
@@ -162,13 +162,14 @@
                                         <input type="number" step="0.01" class="form-control" id="gross_earnings"
                                             required>
                                     </div>
-                                    </div>
-                                    <div class="col-md-6">
+                                        <!-- Second Column Fields -->
                                     <div class="mb-3">
                                         <label for="taxable_amount" class="form-label">Taxable Amount</label>
                                         <input type="number" step="0.01" class="form-control" id="taxable_amount"
                                             required>
                                     </div>
+                                    </div>
+                                    <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="basic_community_tax" class="form-label">Basic Community Tax</label>
                                         <input type="number" step="0.01" class="form-control" id="basic_community_tax"

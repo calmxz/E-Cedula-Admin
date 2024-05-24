@@ -1,23 +1,20 @@
 import axios from 'axios';
 import Chart from 'chart.js/auto';
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     function fetchDataAndUpdate() {
         axios.get('/dashboard-data')
             .then(response => {
                 const data = response.data;
 
                 // Format numbers to 2 decimal places
-                const formattedCollectionsToday = data.collectionsToday.toFixed(2);
-                const formattedTransactionsToday = data.transactionsToday
-                const formattedWeeklyEarnings = data.collectionsThisWeek.toFixed(2);
-                const formattedTransactionsThisWeek = data.transactionsThisWeek
+                const collectionsTodayFormatted = `Php ${data.collectionsToday.toFixed(2)}`;
+                const collectionsThisMonthFormatted = `Php ${data.collectionsThisMonth.toFixed(2)}`;
 
-                // Update the DOM with the fetched and formatted data
-                document.getElementById('collectionsToday').textContent = formattedCollectionsToday;
-                document.getElementById('transactionsToday').textContent = formattedTransactionsToday;
-                document.getElementById('collectionsThisWeek').textContent = formattedWeeklyEarnings;
-                document.getElementById('transactionsThisWeek').textContent = formattedTransactionsThisWeek;
+                document.getElementById('collectionsToday').textContent = collectionsTodayFormatted;
+                document.getElementById('transactionsToday').textContent = data.transactionsToday;
+                document.getElementById('collectionsThisMonth').textContent = collectionsThisMonthFormatted;
+                document.getElementById('transactionsThisMonth').textContent = data.transactionsThisMonth;
 
                 // Update charts with the fetched data
                 updateCharts(data);
@@ -28,12 +25,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateCharts(data) {
-        const weeklyEarningsChart = new Chart(document.getElementById('weeklyEarningsChart').getContext('2d'), {
+        const weeklyEarningsCtx = document.getElementById('weeklyEarningsChart').getContext('2d');
+        const dailyEarningsCtx = document.getElementById('dailyEarningsChart').getContext('2d');
+
+        new Chart(weeklyEarningsCtx, {
             type: 'line',
             data: {
-                labels: ['6 Days Ago', '5 Days Ago', '4 Days Ago', '3 Days Ago', '2 Days Ago', 'Yesterday', 'Today'],
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
                 datasets: [{
-                    label: 'Earnings',
+                    label: 'Weekly Earnings',
                     data: data.weeklyEarnings,
                     borderColor: 'rgba(75, 192, 192, 1)',
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
@@ -43,13 +43,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        const dailyEarningsChart = new Chart(document.getElementById('dailyEarningsChart').getContext('2d'), {
+        new Chart(dailyEarningsCtx, {
             type: 'line',
             data: {
-                labels: ['6 Days Ago', '5 Days Ago', '4 Days Ago', '3 Days Ago', '2 Days Ago', 'Yesterday', 'Today'],
+                labels: ['6 days ago', '5 days ago', '4 days ago', '3 days ago', '2 days ago', 'Yesterday', 'Today'],
                 datasets: [{
-                    label: 'Earnings',
-                    data: data.weeklyTransactions,
+                    label: 'Daily Earnings',
+                    data: data.dailyEarnings,
                     borderColor: 'rgba(153, 102, 255, 1)',
                     backgroundColor: 'rgba(153, 102, 255, 0.2)',
                     fill: true,

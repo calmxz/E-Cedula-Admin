@@ -24,7 +24,7 @@ async function populateCompaniesTable() {
                 <td>${company.place_of_registration}</td>
                 <td>${company.date_of_registration}</td>
                 <td>${company.region}</td>
-                <td>${company.tin_no}</td>
+                <td>${company.tin_no || ''}</td>
                 <td>₱${company.gross_receipt}</td>
                 <td>₱${company.total_community_tax_due}</td>
                 <td>₱${company.interest}</td>
@@ -100,7 +100,7 @@ async function updateCompanyData(companyId){
     document.getElementById('place_of_registration').value = companyToUpdate.place_of_registration;
     document.getElementById('date_of_registration').value = companyToUpdate.date_of_registration;
     document.getElementById('region').value = companyToUpdate.region;
-    document.getElementById('tin').value = companyToUpdate.tin_no;
+    document.getElementById('tin').value = companyToUpdate.tin_no || '';
     document.getElementById('gross_receipt').value = companyToUpdate.gross_receipt;
     document.getElementById('total_community_tax_due').value = companyToUpdate.total_community_tax_due;
     document.getElementById('interest').value = companyToUpdate.interest;
@@ -114,20 +114,20 @@ async function updateCompanyData(companyId){
 }
 
 function saveChanges(){
-    const company_name = document.getElementById('company_name').value
-    const barangay = document.getElementById('barangay').value
-    const municipality = document.getElementById('municipality').value
-    const province = document.getElementById('province').value
-    const kind_of_organization = document.getElementById('kind_of_organization').value
-    const nature_of_business = document.getElementById('nature_of_business').value
-    const place_of_registration = document.getElementById('place_of_registration').value
-    const date_of_registration = document.getElementById('date_of_registration').value
-    const region = document.getElementById('region').value
-    const tin = document.getElementById('tin').value 
-    const gross_receipt = document.getElementById('gross_receipt').value
-    const total_community_tax_due = document.getElementById('total_community_tax_due').value
-    const interest = document.getElementById('interest').value
-    const total_amount_paid = document.getElementById('total_amount_paid').value
+    const company_name = document.getElementById('company_name').value;
+    const barangay = document.getElementById('barangay').value;
+    const municipality = document.getElementById('municipality').value;
+    const province = document.getElementById('province').value;
+    const kind_of_organization = document.getElementById('kind_of_organization').value;
+    const nature_of_business = document.getElementById('nature_of_business').value;
+    const place_of_registration = document.getElementById('place_of_registration').value;
+    const date_of_registration = document.getElementById('date_of_registration').value;
+    const region = document.getElementById('region').value;
+    const tin = document.getElementById('tin').value || '';
+    const gross_receipt = document.getElementById('gross_receipt').value;
+    const total_community_tax_due = document.getElementById('total_community_tax_due').value;
+    const interest = document.getElementById('interest').value;
+    const total_amount_paid = document.getElementById('total_amount_paid').value;
 
     const data = {
          company_name: company_name,
@@ -139,7 +139,7 @@ function saveChanges(){
          place_of_registration: place_of_registration,
          date_of_registration: date_of_registration,
          region: region,
-         tin: tin, 
+         tin_no: tin || '', 
          gross_receipt: gross_receipt,
          total_community_tax_due: total_community_tax_due,
          interest: interest,
@@ -192,10 +192,14 @@ async function deleteCompanyData(companyId){
         const company = await getCompanyById(companyId);
         const company_name = company.company_name;
 
-        await axios.delete(`/api/companies/${companyId}`);
-        populateCompaniesTable();
+        const isConfirmed = confirm(`Are you sure you want to delete ${company_name}'s cedula?`)
 
-        alert(`${company_name}'s cedula deleted successfully`);
+        if(isConfirmed){
+            await axios.delete(`/api/companies/${companyId}`);
+            populateCompaniesTable();
+    
+            alert(`${company_name}'s cedula deleted successfully`);
+        }
     } catch (error) {
         console.error("Error deleting company's cedula:", error)
     }

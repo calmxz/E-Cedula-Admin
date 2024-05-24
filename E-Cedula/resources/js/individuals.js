@@ -4,7 +4,7 @@ import axios from 'axios'
 async function populateIndividualsTable(){
     try{
         const response = await axios.get('/api/individuals');
-        const tableBody = document.querySelector('.table tbody');
+        const tableBody = document.querySelector('table tbody');
 
         tableBody.innerHTML = '';
         
@@ -261,10 +261,15 @@ async function deleteIndividualData(individualId) {
         const firstName = individual.FirstName;
         const lastName = individual.LastName;
 
-        await axios.delete(`/api/individuals/${individualId}`);
-        populateIndividualsTable();
-
-        alert(`${firstName} ${lastName}'s cedula deleted successfully`);
+        // Display a confirmation dialog before deleting
+        const isConfirmed = confirm(`Are you sure you want to delete ${firstName} ${lastName}'s cedula?`);
+        
+        if (isConfirmed) {
+            await axios.delete(`/api/individuals/${individualId}`);
+            populateIndividualsTable();
+    
+            alert(`${firstName} ${lastName}'s cedula deleted successfully`);
+        }
     } catch (error) {
         console.error("Error deleting individual's cedula:", error);
     }
